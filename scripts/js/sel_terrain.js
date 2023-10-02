@@ -91,6 +91,7 @@ function select_terrain_type(numCols, numRows){
 
                         if(m_geo_stock[morph_name]['col_' + col_number][row_number] === 1){     // if within geomorph array position is 1
                             // Assign this type of geometry
+                            // Probably can take out the === 1 because any value that is not zero will be true
                             hex_to_mod.classList.add(morph_name_no_suffix) 
                             // can we either remove the old terrain type classes
                             // pseudocode: if hex_to_mod has (swamp, woods, open...) remove them
