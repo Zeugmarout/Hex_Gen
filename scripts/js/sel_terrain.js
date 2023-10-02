@@ -18,7 +18,7 @@ function select_terrain_type(numCols, numRows){
         number_of_geomorphs = list_of_geomorphs.length;     // returns '2'
 
         // Set limits //
-        proportion_mountains = 0.1; // This could be a user input later on.
+        proportion_mountains = 0.1638; // This could be a user input later on.
         num_hexes_of_this_morph = 0;
         total_num_hexes = document.getElementsByClassName('hex-center').length; // not an array, can be turned into one.
         prop_hexes_of_this_morph = 0;                                           // each hex has class name 'hex-center' (for now)
