@@ -43,7 +43,7 @@ function select_terrain_type(numCols, numRows){
 
                 if(prop_hexes_of_this_morph <= proportion_mountains) {                              // redundant?
 
-                r_col_to_start = Math.floor(Math.random() * (numCols - number_cols_in_geomorph)) + 1;
+                r_col_to_start = Math.floor(Math.random() * (numCols - number_cols_in_geomorph)) + 1;   
 
                 // takes # columns in map and subtracts number in the geomorph to avoid having things go off the edge.  Will change(?)
                 // once we figure out saving files.
@@ -55,9 +55,11 @@ function select_terrain_type(numCols, numRows){
 
                 // These inform the top left corner of our geomorph's placement.
 
-                directions = ['horizontal','vertical'];     // to add: diagonal
-                let direction = 'unknown';
-                direction = directions[Math.floor(Math.random() * directions.length)];  // use choose function
+                // TRY WITHOUT THE VERTICAL/HORIZONTAL FLIP
+                // directions = ['horizontal','vertical'];     // to add: diagonal
+                let direction = 'vertical';
+                // direction = directions[Math.floor(Math.random() * directions.length)];  // use choose function
+                
                 console.log("direction is " + direction);
                 // Calculate hex ID for this iteration of the loop.
                 // These loops' start and end integers are relative to the dimensions of the geomorph file.
@@ -71,13 +73,20 @@ function select_terrain_type(numCols, numRows){
                         if(direction == 'vertical'){
                         uniqueID = (numRows) * (col_num_hex - 1) + row_num_hex; // identical to how hexmap was generated.
                         }                                                       // although variable names are differentiated.
-                        // numRows == user input for the hexmap (ie. map total)     eg. column 2.  numRows is let's say 30.
+                        // numRows == user input for the hexmap (ie. map total)     
                         // col / row_num_hex == a relative position for the current hex, ie. col and rows from top left.
+                        // 
                         // eg. we're in 2nd column, row 3, and hexmap is a 30 x 30: 
                         // 30 * (2-1) + 3 == unique id of 33. 
                         // This is all giving us an 'anchor' - 
                         // either to start applying the geomorph, or it's re-applying this method to each cell of the geomorph.
                         
+                        // Needs a modulus or something to tell it to only apply geomorphs starting on odd columns 
+                        // otherwise we can't control how the morph is applied, and it will sag in odd places 
+                        // because of the even columns being one half step lower.
+
+                        // TRY WITHOUT THE HORIZONTAL/DIAGONAL OPTIONS...
+
                         if(direction == 'horizontal'){
                             uniqueID = (numRows) * (row_num_hex - 1) + col_num_hex; // opposite, seems to work
                         // each 2nd column is staggered lower. 
