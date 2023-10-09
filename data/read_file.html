@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HexGen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <input type="file" id="fileInput">
+<button onclick="readFile()">Read File</button>
+
+<pre id="fileContent"></pre>
+
+<script>
+  function readFile() {
+    const fileInput = document.getElementById('fileInput');
+    const fileContent = document.getElementById('fileContent');
+    
+    const fileName = 'sample.txt'; // Specify the name of the file
+    
+    fetch(fileName) // Fetch the file using a relative path
+      .then(response => response.text()) // Read the file as text
+      .then(content => {
+        fileContent.textContent = content; // Display the file content
+      })
+      .catch(error => {
+        console.error('Error reading the file:', error);
+        fileContent.textContent = 'An error occurred while reading the file.';
+      });
+  }
+</script>
+</body>

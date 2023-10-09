@@ -1,0 +1,7 @@
+To host this HTML page locally (i.e. not on the internet),
+you need to use the Python module http.server
+to use own of your computer's own ports as the hosting domain(?)
+
+In VS Code's terminal, run this code: python -m http.server
+
+Then, go to this 'website' in your web browser: http://localhost:8000

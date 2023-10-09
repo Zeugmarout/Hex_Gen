@@ -1,0 +1,133 @@
+@font-face {  
+src: url('../mats/ENDOR.ttf');
+font-family: "Endor";
+}
+
+.endor {
+    font-family: 'Endor';
+}
+
+.h4 {
+    font-family: 'Endor';
+}
+/* Define the column layout*/
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sidebar {
+    width: 25%;
+    background: url(../mats/stone_wall_2.png);
+    border: 10px solid transparent;
+    padding: 5px;
+    border-image: url(../mats/wood_frame_crop.png) 75 round;
+    border-image-width: 10px;
+    max-height: 100%; /* Set a maximum height equal to the viewport height */
+    overflow-y: auto; 
+}
+
+.main {
+    width: 75%;
+    background: url(../mats/lake_forest_background.jpg);
+    background-size: cover;
+    max-height: 100%;
+}
+
+/* Style for rows*/
+.row {
+    text-align: center;
+    display: inline-flex;
+    text-align:center;
+}
+
+ /* Style for each column */
+.column {
+    flex-basis: 30%; /* Adjust the width as needed */
+    padding: 0px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Define the initial style of the box */
+.box {
+    width: 100%;
+    height: 48%;
+    border: 1px solid black;
+    border-radius:3%;
+    cursor: pointer;
+    object-fit: contain;
+    /*padding: 5px;*/
+    margin-bottom: 10px;
+}
+    
+
+.dnd-button {
+    background: url(../mats/red_background.png);
+    color: goldenrod;
+    border: 3px solid #350f0f;
+}
+
+.dnd-button::first-letter {
+    color:white;
+}
+
+.dnd-button:hover {
+    background: url(../mats/red_background.png);
+    color:white;
+    border: 3px solid #350f0f;
+}
+
+.hex-gen-page {
+    width: 98%; 
+    height: 98%; 
+    overflow-y: auto; 
+    background:rgba(250,250,250,.5);
+    position: relative;
+    left: 1%;
+    top: 1%;
+}
+
+.content {
+    display: block; /* Hide content initially */
+    padding: 20px;
+}
+
+.over-background {
+    background-color: rgba(255, 255, 255, 0.66);
+    border: 4px solid #40150ccc;
+    border-radius: 7px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.arrows {
+    width: 30px;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.dnd-button {
+    background: url(../mats/red_background.png);
+    color: goldenrod;
+    border: 3px solid #350f0f;
+}
+
+.dnd-button::first-letter {
+    color:white;
+}
+
+.music-button {
+    filter:opacity(0.5);
+    border:2px solid transparent;
+}
+
+.music-button:hover {
+    border:2px solid goldenrod;
+}

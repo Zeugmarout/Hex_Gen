@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HexGen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script src="./scripts/js/add_audio.js"></script>
+    <script src="./scripts/js/js_utils.js"></script>
+    <script src="./scripts/js/data_read_write.js"></script>
+    <script src="./scripts/js/init_hex.js"></script>
+    <script src="./scripts/js/ripple.js"></script>
+    <script src="./scripts/js/add_mouse_ef.js"></script>
+    <script src="./scripts/js/render_hex.js"></script>
+    <script src="./scripts/js/create_clouds.js"></script>
+    <script src="./scripts/js/sel_terrain.js"></script>
+    <script src="./scripts/js/make_hex_map.js"></script>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/hexagon_styles.css" />
+</head>
+<body style = 'height: 97vh;'>
+  <div id = 'page_content' class = 'container'>
+    <div id = 'sidebar' class = 'sidebar center-text'>
+            <h1 class="over-background endor">HexGen</h3>
+          <h3 class = 'over-background endor'>Project Name:</h5>
+          <input type="text" style = 'width:80%;height:30px;opacity:0.8;border-radius:6px;margin-top: -4rem;'></input>
+          <div class = 'over-background' style="text-align:center;padding-left:20%;padding-right:20%;">
+            <h4 style="display: inline;font-family:endor;">Num. Hexagons (Horizontal)</h4>
+            <div class = 'row'>
+              <p>3</p>
+              <input id = 'number_hex_h' type="range" min="3" max="30" value="25">
+              <p>30</p>
+            </div>
+        </div>
+          <div class = 'over-background' style="text-align:center;padding-left:20%;padding-right:20%;">
+            <h4 style="display: inline;font-family:endor;">Num. Hexagons (Vertical)</h4>
+            <div class = 'row'>
+              <p>3</p>
+              <input id = 'number_hex_v' type="range" min="3" max="30" value="25">
+              <p>30</p>
+            </div>
+        </div>
+          <div id = 'make_hex' class = 'dnd-button' style="font-size: x-large;margin: 15px; padding: 10px;">Create Hex Map</div>
+          <div id = 'randomize_terrain' class = 'dnd-button' style="font-size: x-large;margin: 15px; padding: 10px;">Roll up Terrain</div>
+          <div class = 'over-background' style="text-align:center;padding-left:20%;padding-right:20%;">
+            <div class = 'row'>
+              <img id = 'skip_last_audio' src = 'mats/left-arrow.svg' class = 'music-button arrows'></img>
+              <img id = 'start_music' src = 'mats/icons8-harp-64.png' class = 'music-button' style = 'width:35px;'></img>
+              <img id = 'skip_next_audio' src = 'mats/left-arrow.svg' class = 'music-button arrows' style = 'transform: rotate(180deg);'></img>
+            </div>
+          </div>
+    </div>
+    <div id = 'main' class = 'main'>
+      <div id = 'hex_gen_page' class = "hex-gen-page">
+        <div id = 'save_proj' class = 'dnd-button navbar-button' style = 'position:absolute; width: 8%; left:80%;'>Save Project</div>
+        <div id = 'load_proj' class = 'dnd-button navbar-button' style = 'position:absolute; width: 8%; left:90%;'>Load Project</div>
+      <!-- Create a hidden file input element -->
+        <input type="file" id="fileInput" style="display: none;">
+      </div>
+    </div>
+  </div>
+  <audio id = 'bg_music_1' src = "https://fi.zophar.net/soundfiles/nintendo-snes-spc/chrono-trigger/102%20Chrono%20Trigger%20%28Looped%29.mp3?raw=true"></audio>
+  <audio id = 'bg_music_2' src = "https://vgmsite.com/soundtracks/warcraft-2-tides-of-darkness-cda/ljjizkibrg/02%20-%20Human%20Battle%2001.mp3?raw=true""></audio>
+  <audio id = 'bg_music_3' src = "https://fi.zophar.net/soundfiles/nintendo-snes-spc/chrono-trigger/109%20Wind%20Scene.mp3?raw=true"></audio>
+  <audio id = 'bg_music_4' src = "https://vgmsite.com/soundtracks/warcraft-2-tides-of-darkness-cda/llhafojenj/11%20-%20Orc%20Battle%2001.mp3"></audio>
+  <audio id = 'bg_music_5' src = "https://fi.zophar.net/soundfiles/nintendo-snes-spc/chrono-trigger/119%20Frog%27s%20Theme.mp3?raw=true"></audio>
+  <audio id = 'tile-click-noise' src = './mats/stone_sliding_short.mp3', type="audio/mp3"></audio>
+  <script>
+
+    document.getElementById('page_content').style.height = window.innerHeight*0.97 + 'px';
+
+    add_audio();
+
+    // Add functionality to 'save project' button.
+    enable_downloads('save_proj');
+    
+    // Add functionality to 'load project' button.
+    enable_data_reads('load_proj',processData);
+    var loaded_data = {};
+
+    function processData(data) {
+    // Assign the loaded data to the 'loaded_data' object
+    loaded_data = data;
+
+    // Now you can use 'loaded_data' in your JavaScript code
+
+    // Call another function or perform actions using 'loaded_data'
+    make_hex_map_from_loaded_data(loaded_data);
+    }
+
+    var dataToSave = {
+      number_of_hexes: 0,
+      mountain_hexes: 0
+      };
+
+    // ## Depending on user's inputs, make x hexagons.
+    let numRows = 0; // Number of rows
+    let numCols = 0; // Number of columns
+
+    //const container_height = window.innerHeight;
+    //const container_width = window.innerWidth;
+    let container_height = document.getElementById('hex_gen_page').offsetHeight;
+    let container_width = document.getElementById('hex_gen_page').offsetWidth;
+
+    //document.addEventListener('DOMContentLoaded', function () {
+      
+      const make_hex_button = document.getElementById('make_hex');
+    
+      make_hex_button.addEventListener('click', function() {
+
+        numRows = number_hex_v.value;
+        numCols = number_hex_h.value;
+        container_height = document.getElementById('hex_gen_page').offsetHeight;
+        container_width = document.getElementById('hex_gen_page').offsetWidth;
+
+        make_hex_map(numRows, numCols, container_height, container_width, 
+        make_clouds = true);
+      });
+
+      const random_terrain_button = document.getElementById('randomize_terrain');
+    
+      random_terrain_button.addEventListener('click', function() {
+
+        numRows = number_hex_v.value;
+        numCols = number_hex_h.value;
+        container_height = document.getElementById('hex_gen_page').offsetHeight;
+        container_width = document.getElementById('hex_gen_page').offsetWidth;
+
+      //select_terrain_type();
+      select_terrain_type(
+        terrain_types = ['wooded', 'swamp', 'desert', 'mountain'],
+        terrain_proportions = [0.296,0.03,0.05,0.16],
+        terrain_replace_list = [
+          [], 
+          ['swamp'], // 'Wooded' replaces 'Swamp'
+          ['swamp','wooded'],
+          ['swamp','wooded','desert']],
+          delay = 1000 // this number is in milliseconds, and is totally optional; could be 0.
+      );
+    });
+
+      // Screen resize event.
+      //window.addEventListener("resize", function() {
+      //  render_hexagons(numCols, numRows, container_height, container_width);
+      //});
+    //});
+  </script>
+</body>
+</html>

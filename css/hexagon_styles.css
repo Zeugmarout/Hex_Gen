@@ -1,0 +1,90 @@
+.hex-center {
+    background: url(../mats/blank_hex_w_base_small.png);
+    background-size: cover;
+    transition: transform 0.3s ease;
+}
+.hex-label {
+    padding-top: 77%;
+    font-size: x-small;
+    padding-left: 30%;
+}
+
+.desert {
+    background: url(../mats/desert_hex.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.mountain {
+    background: url(../mats/mountain_hex.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.open {
+    background: url(../mats/open_hex.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.swamp {
+    background: url(../mats/swamp_hex.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.wooded {
+    background: url(../mats/wooded_hex.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+.hex-center:hover {
+    transform: translateY(-15%) !important; /* Move 20px upward on hover */
+}
+
+.highlighted {
+    border: 2px solid yellow;
+}
+
+.cloud-container {
+    position: absolute;
+    top: 0;
+    left: 0%;
+    right: 120%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none; /* Allow events to pass through */
+}
+
+.cloud {
+    position: absolute;
+    opacity: 0.6;
+    background-size: cover;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0% {
+        left: -50%; /* Start from the left edge of the container */
+    }
+    100% {
+        left: 100%; /* Move to the right edge of the container */
+    }
+}
