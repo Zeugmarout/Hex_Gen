@@ -27,16 +27,16 @@
             <h4 style="display: inline;font-family:endor;">Num. Hexagons (Horizontal)</h4>
             <div class = 'row'>
               <p>3</p>
-              <input id = 'number_hex_h' type="range" min="3" max="30" value="25">
-              <p>30</p>
+              <input id = 'number_hex_h' type="range" min="3" max="85" value="55">
+              <p>85</p>
             </div>
         </div>
           <div class = 'over-background' style="text-align:center;padding-left:20%;padding-right:20%;">
             <h4 style="display: inline;font-family:endor;">Num. Hexagons (Vertical)</h4>
             <div class = 'row'>
               <p>3</p>
-              <input id = 'number_hex_v' type="range" min="3" max="30" value="25">
-              <p>30</p>
+              <input id = 'number_hex_v' type="range" min="3" max="60" value="45">
+              <p>60</p>
             </div>
         </div>
           <div id = 'make_hex' class = 'dnd-button' style="font-size: x-large;margin: 15px; padding: 10px;">Create Hex Map</div>
@@ -128,13 +128,13 @@
       //select_terrain_type();
       select_terrain_type(
         terrain_types = ['wooded', 'swamp', 'desert', 'mountain'],
-        terrain_proportions = [0.296,0.03,0.05,0.16],
+        terrain_proportions = [0.2976,0.0345,0.0585,0.1837],
         terrain_replace_list = [
           [], 
-          ['swamp'], // 'Wooded' replaces 'Swamp'
+          ['wooded'], // 'Swamp' replaces 'Wooded'
           ['swamp','wooded'],
-          ['swamp','wooded','desert']],
-          delay = 1000 // this number is in milliseconds, and is totally optional; could be 0.
+          ['swamp', 'wooded','desert']],
+          delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
       );
     });
 

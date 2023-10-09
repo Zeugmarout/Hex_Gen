@@ -18,9 +18,9 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
 
         // This loop adds a geomorph to the map at a random anchor hexagon's position;
         // The loop continues until either we've reached the terrain type's ideal proportion,
-        // or we've done 80 loops (to prevent infinite looping...).
+        // or we've done 600 loops (to prevent infinite looping...).
         console.log('about to start loop');
-        for(let i = 0; prop_hexes_of_this_morph <= proportion_terrain & i < 80; i++) {
+        for(let i = 0; prop_hexes_of_this_morph <= proportion_terrain & i < 600; i++) {
 
             //for (let morph = 0; morph < number_of_geomorphs; morph++) {
             morph = Math.floor(Math.random() * number_of_geomorphs); //Get random index integer based on # of geo options.
@@ -54,7 +54,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
 
                 //directions = ['horizontal','vertical'];
                 //let direction = 'unknown';
-                let direction = 'vertical';
+                let direction = 'horizontal';
                 //direction = directions[Math.floor(Math.random() * directions.length)];
                 
                 // Calculate hex ID for this iteration of the loop.
@@ -67,17 +67,18 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         anchor_hex_col = Math.ceil(anchor_id / numRows);
 
                         // Use the anchor's coordinates to offset the overlaid geomorph lattice;
+                        // The -1 is to account for the col_ and row_numbers starting at 1. 
                         map_col = col_number + anchor_hex_col - 1;
                         map_row = row_number + anchor_hex_row - 1;
 
                         if(direction == 'vertical'){
                             // Solve for the uniqueID of the hexagon we're looking at.
-                            uniqueID = (numRows) * (map_col - 1) + map_row;
+                            uniqueID = (numRows) * (map_col - 1) + map_row;     // This actually gives horizontal results!
                         }
                         //console.log('hex unique ID is ' + uniqueID);
-                        //if(direction == 'horizontal'){
-                        //    uniqueID = (numRows) * (row_num_hex - 1) + col_num_hex;
-                        //}
+                        if(direction == 'horizontal'){
+                            uniqueID = (numRows) * (map_row - 1) + map_col;     // 
+                        }
                         //if(direction == 'diagonal'){
                         //    // Haven't figured this one out yet...
                         //}
