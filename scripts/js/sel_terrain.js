@@ -18,9 +18,8 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
 
         // This loop adds a geomorph to the map at a random anchor hexagon's position;
         // The loop continues until either we've reached the terrain type's ideal proportion,
-        // or we've done 600 loops (to prevent infinite looping...).
-        console.log('about to start loop');
-        for(let i = 0; prop_hexes_of_this_morph <= proportion_terrain & i < 600; i++) {
+        // or we've done 3000 loops (to prevent infinite looping...).
+        for(let i = 0; prop_hexes_of_this_morph <= proportion_terrain & i < 3000; i++) {
 
             //for (let morph = 0; morph < number_of_geomorphs; morph++) {
             morph = Math.floor(Math.random() * number_of_geomorphs); //Get random index integer based on # of geo options.
@@ -37,13 +36,14 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
             morph_name = list_of_geomorphs[morph];
             morph_name_no_suffix = morph_name.replace(/_[0-9]+$/, '');
 
-            console.log('morph name is ' + morph_name);
             // Get the number and proportion of hexagons of this terrain type; used to test if the loop
             // should apply this terrain type to any more hexagons, or if it's already reached the ideal proportion for this type.
             number_hexes_of_terrain = document.getElementsByClassName(morph_name_no_suffix).length;
+                // == running total of e.g. swamp hexes
             prop_hexes_of_this_morph = number_hexes_of_terrain / total_num_hexes;
+                // == running %ile of e.g. swamp hexes
 
-            if(prop_hexes_of_this_morph <= proportion_terrain) {
+            if(prop_hexes_of_this_morph <= proportion_terrain) {            // redundant? See above for loop ln 23
                 // Find our anchor id Hexagon. 
                 // Chosen randomly from amongst hexes not already converted into this terrain type.
                 // A new anchor is chosen for each application of the geomorph.
@@ -66,18 +66,30 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         anchor_hex_row = anchor_id % numRows;
                         anchor_hex_col = Math.ceil(anchor_id / numRows);
 
+                        // Functional Alex Addition
+                        // "Is Even"
+                        // To deal with the even-row sag of the hex-map, we want to apply our geomorphs on odd rows only.
+                        // Simply because all the data-entry for geomorphs will be done with that even-row-sag assumption.
+                        // All geomorphs will start with a filled hex (1) in their leftmost column rather than a blank (0).
+                        // We want a function to check whether r_col_to_start is odd or even.
+                        // If it's even, we kick the morph over by one column.
+                        // if(anchor_hex_col % 2 === 0) {
+                        //     anchor_hex_col ++;
+                        // }
+
+
                         // Use the anchor's coordinates to offset the overlaid geomorph lattice;
                         // The -1 is to account for the col_ and row_numbers starting at 1. 
                         map_col = col_number + anchor_hex_col - 1;
                         map_row = row_number + anchor_hex_row - 1;
 
-                        if(direction == 'vertical'){
+                        if(direction == 'vertical'){    // currently unused because only applying horizontally...
                             // Solve for the uniqueID of the hexagon we're looking at.
-                            uniqueID = (numRows) * (map_col - 1) + map_row;     // This actually gives horizontal results!
+                            uniqueID = (numRows) * (map_col - 1) + map_row;     
                         }
                         //console.log('hex unique ID is ' + uniqueID);
                         if(direction == 'horizontal'){
-                            uniqueID = (numRows) * (map_row - 1) + map_col;     // 
+                            uniqueID = (numRows) * (map_row - 1) + map_col;      
                         }
                         //if(direction == 'diagonal'){
                         //    // Haven't figured this one out yet...

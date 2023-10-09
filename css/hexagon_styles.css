@@ -59,6 +59,9 @@
 
 .highlighted {
     border: 2px solid yellow;
+    
+    transform: translateX(-2px) !important; 
+    transform: translateY(-2px) !important; /*to account for the border width*/
 }
 
 .cloud-container {
