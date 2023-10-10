@@ -90,6 +90,10 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         // temp_col_number and temp_row_number are the temporary references to morph,
                         // ie. the column/row we are transcribing in.
 
+                        // TRY SWITCHING THE ABOVE INNARDS OF THE FOR LOOPS, IE. 
+                //for (let temp_row_number = 0; temp_row_number < number_rows_in_geomorph; temp_row_number++) {                        
+                    //for (let temp_col_number = 1; temp_col_number <= number_cols_in_geomorph; temp_col_number++) {
+
 
                         // THIS TRACKS THROUGH THE MORPH'S DIMENSIONS ON THE MAP FROM TOP LEFT, OVER EACH COLUMN,
                         // LEFT TO RIGHT, UNTIL IT REACHES BOTTOM RIGHT.  LINE BY LINE. BUT GOING BY ROW WHERE I
@@ -97,7 +101,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         // THUS IT IS ALSO MIRRORING AND ROTATING THE MORPH!!!!
 
 
-                        map_col = temp_col_number + anchor_hex_col - 1;
+                        map_col = temp_col_number + anchor_hex_col - 1; // - 1 because temp_col_number started at 1, not zero 
                         //console.log(`map_col is ${map_col}`);
                         map_row = temp_row_number + anchor_hex_row;     
                         //console.log(`map_row is ${map_row}`);   // THESE ARE WORKING
@@ -108,7 +112,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         if(direction == 'vertical'){    // currently unused because only applying horizontally...
                             // Solve for the uniqueID of the hexagon we're looking at.
                             uniqueID = (numRows) * (map_col - 1) + map_row;
-                            console.log(`uniqueID is ${uniqueID}`);    
+                            console.log(`uniqueID is ${uniqueID}`);       
                         }
                         //console.log('hex unique ID is ' + uniqueID);
                         if(direction == 'horizontal'){
@@ -122,12 +126,14 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
 
                         // Pull out this hexagon ('hex_to_modify').
                         hex_to_mod = document.getElementById('hex_' + uniqueID);
-
+                        //geo_col_number = temp_row_number + 1;   // remember that in geomorphs rows are labeled columns for now;
+                        //geo_row_value = temp_col_number - 1;
 
                         // Check that this hexagon exists! If not, do nothing.
                         if(hex_to_mod != null) {
                             // Check the geomorph cell's value; if it's 1 (i.e., TRUE), apply it to the hexagon!
-                            if(m_geo_stock[morph_name]['col_' + temp_col_number][temp_row_number] === 1){    
+                            if(m_geo_stock[morph_name]['col_' + temp_col_number][temp_row_number] === 1) {    
+                                // tried switching around the col and row numbers inside there, try again
                                
                                 // Quick check: any other terrain types to replace? If so, remove them here.
                                 for (i in terrain_replace_list) {
