@@ -7,7 +7,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
         list_of_geomorphs = Object.keys(m_geo_stock);
         number_of_geomorphs = list_of_geomorphs.length;
 
-        console.log('Working on applying ' + terrain_type);
+        console.log(`Applying ${terrain_type} with assign terrain function.`);
 
         // Set limits //
         proportion_terrain = target_proportion; // This could be a user input later on.
@@ -49,22 +49,12 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                 // A new anchor is chosen for each application of the geomorph.
                 anchor_id = Math.floor(Math.random() * viable_hexes_for_terrain.length);
                 //anchor_hex = document.getElementById('hex_' + anchor_id);
-
-                console.log(anchor_id + ' is the anchor id');
-
-                //directions = ['horizontal','vertical'];
-                //let direction = 'unknown';
-                let direction = 'horizontal';
-                //direction = directions[Math.floor(Math.random() * directions.length)];
-                
-                // Calculate hex ID for this iteration of the loop.
-                // These loops' start and end integers are relative to the dimensions of the geomorph file.
-                for (let col_number = 1; col_number <= number_cols_in_geomorph; col_number++) {
-                    for (let row_number = 1; row_number < number_rows_in_geomorph; row_number++) {
-
-                        // Solve for the row and column coordinates of the anchor hexagon.
-                        anchor_hex_row = anchor_id % numRows;
-                        anchor_hex_col = Math.ceil(anchor_id / numRows);
+                console.log(`${anchor_id} is the anchor id for ${morph_name}`);
+                // Solve for the row and column coordinates of the anchor hexagon.
+                anchor_hex_row = anchor_id % numRows; 
+                console.log(`anchor hex row is ${anchor_hex_row}`);  
+                anchor_hex_col = Math.ceil(anchor_id / numRows);
+                console.log(`anchor hex column is ${anchor_hex_col}`);    // These are calculating correctly
 
                         // Functional Alex Addition
                         // "Is Even"
@@ -77,19 +67,42 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         //     anchor_hex_col ++;
                         // }
 
-
+                //directions = ['horizontal','vertical'];
+                //let direction = 'unknown';
+                let direction = 'vertical';
+                //direction = directions[Math.floor(Math.random() * directions.length)];
+                
+                // Calculate hex ID for this iteration of the loop.
+                // These loops' start and end integers are relative to the dimensions of the geomorph file.
+                for (let geo_col_number = 1; geo_col_number <= number_cols_in_geomorph; geo_col_number++) {
+                    for (let geo_row_number = 1; geo_row_number < number_rows_in_geomorph; geo_row_number++) {                        
                         // Use the anchor's coordinates to offset the overlaid geomorph lattice;
-                        // The -1 is to account for the col_ and row_numbers starting at 1. 
-                        map_col = col_number + anchor_hex_col - 1;
-                        map_row = row_number + anchor_hex_row - 1;
+                        // The -1 is to account for the col_ and geo_row_numbers starting at 1. 
+
+                        // THIS TRACKS THROUGH THE MORPH'S DIMENSIONS ON THE MAP FROM TOP LEFT, OVER EACH COLUMN,
+                        // LEFT TO RIGHT, UNTIL IT REACHES BOTTOM RIGHT.  LINE BY LINE.
+
+                        // THIS IS CURRENTLY CUTTING OFF THE FIRST 'column' OF THE GEOMORPH (TRY SETTING TO 0 ABOVE?)
+
+                        // IT IS ALSO MIRRORING AND FLIPPING THE MORPH 90 DEGREES!!!!
+
+                        map_col = geo_col_number + anchor_hex_col - 1;
+                        console.log(`map_col is ${map_col}`);
+                        map_row = geo_row_number + anchor_hex_row - 1;
+                        console.log(`map_row is ${map_row}`);   // THESE ARE WORKING
+                        // rol_ and geo_row_number are the temporary references to morph, ie. the column/row we are transcribing in
+                        // map_col and _row are the positions on the hexmap
 
                         if(direction == 'vertical'){    // currently unused because only applying horizontally...
                             // Solve for the uniqueID of the hexagon we're looking at.
-                            uniqueID = (numRows) * (map_col - 1) + map_row;     
+                            uniqueID = (numRows) * (map_col - 1) + map_row;
+                            console.log(`uniqueID is ${uniqueID}`);     
                         }
                         //console.log('hex unique ID is ' + uniqueID);
                         if(direction == 'horizontal'){
-                            uniqueID = (numRows) * (map_row - 1) + map_col;      
+                            uniqueID = (numRows) * (map_row - 1) + map_col; // Seems to render morphs horizontally (good) but not to edges of map
+                            // uniqueID = (numRows) 
+                            console.log(`uniqueID is ${uniqueID}`);     
                         }
                         //if(direction == 'diagonal'){
                         //    // Haven't figured this one out yet...
@@ -101,20 +114,20 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         // Check that this hexagon exists! If not, do nothing.
                         if(hex_to_mod != null) {
                             // Check the geomorph cell's value; if it's 1 (i.e., TRUE), apply it to the hexagon!
-                            if(m_geo_stock[morph_name]['col_' + col_number][row_number] === 1){
+                            if(m_geo_stock[morph_name]['col_' + geo_col_number][geo_row_number] === 1){
                                 
                                 // Quick check: any other terrain types to replace? If so, remove them here.
                                 for (i in terrain_replace_list) {
                                     // Pull out the i'th terrain to replace...
                                     terrain_to_replace = terrain_replace_list[i];
                                     // Tell user in console log that we are scanning for other terrain type to be replaced...
-                                    console.log('Looking to replace ' + terrain_to_replace + ' with ' + morph_name_no_suffix);
+                                    //console.log('Looking to replace ' + terrain_to_replace + ' with ' + morph_name_no_suffix);
                                     // Check the class name list of the hexagon; does it have this old terrain type?
                                     if(hex_to_mod.classList.contains(terrain_to_replace)){
                                         // Remove old terrain type from class list.
                                         hex_to_mod.classList.remove(terrain_to_replace);
                                         // Inform user in console log.
-                                        console.log('Overwrote ' + terrain_to_replace + ' with ' + morph_name_no_suffix + ' for ' + hex_to_mod.id);
+                                        //console.log('Overwrote ' + terrain_to_replace + ' with ' + morph_name_no_suffix + ' for ' + hex_to_mod.id);
                                     }
                                 }
                                 // After the check of other terrain types above, 
@@ -148,7 +161,7 @@ function select_terrain_type(
         this_proportion = terrain_proportions[i];
         this_replacement_list = terrain_replace_list[i];
 
-        console.log('about to apply ' + this_terrain)
+        console.log(`About to apply ${this_terrain} from terrain application loop.`)
         // Apply the loop with a 1-second delay between rounds.
         setTimeout(function() {
             assign_terrain(this_terrain, this_proportion, this_replacement_list); 
