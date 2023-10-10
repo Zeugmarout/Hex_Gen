@@ -94,18 +94,15 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         // THIS TRACKS THROUGH THE MORPH'S DIMENSIONS ON THE MAP FROM TOP LEFT, OVER EACH COLUMN,
                         // LEFT TO RIGHT, UNTIL IT REACHES BOTTOM RIGHT.  LINE BY LINE. BUT GOING BY ROW WHERE I
                         // THOUGHT IT WAS COLUMNS, and vice versa.
-
-
-                        // THIS IS CURRENTLY CUTTING OFF THE FIRST 'column' OF THE GEOMORPH (TRY SETTING TO 0 ABOVE?)
-                        // IT IS ALSO MIRRORING AND FLIPPING THE MORPH 90 DEGREES!!!!
+                        // THUS IT IS ALSO MIRRORING AND ROTATING THE MORPH!!!!
 
 
                         map_col = temp_col_number + anchor_hex_col - 1;
                         //console.log(`map_col is ${map_col}`);
-                        map_row = temp_row_number + anchor_hex_row - 1;
+                        map_row = temp_row_number + anchor_hex_row;     
                         //console.log(`map_row is ${map_row}`);   // THESE ARE WORKING
                        
-                        // map_col and _row are the positions on the hexmap
+                        // map_col and _row are the positions on the hexmap of the particular hex being overwritten
 
 
                         if(direction == 'vertical'){    // currently unused because only applying horizontally...
