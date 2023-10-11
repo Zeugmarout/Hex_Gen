@@ -73,8 +73,8 @@ function make_hex_map_from_loaded_data(loaded_data, container_height, container_
     create_clouds(container_height);
     }
 
-    for(let i = 0; i < 100; i++) {
-        hex_for_mods = document.getElementById(mountain_hexes[i]);
-        hex_for_mods.classList.add('mountain');
-    }
+    //for(let i = 0; i < 100; i++) {
+    //    hex_for_mods = document.getElementById(mountain_hexes[i]);
+    //    hex_for_mods.classList.add('mountain');
+    //}
   }

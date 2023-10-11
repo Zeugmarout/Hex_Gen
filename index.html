@@ -27,16 +27,16 @@
             <h4 style="display: inline;font-family:endor;">Num. Hexagons (Horizontal)</h4>
             <div class = 'row'>
               <p>3</p>
-              <input id = 'number_hex_h' type="range" min="3" max="85" value="55">
-              <p>85</p>
+              <input id = 'number_hex_h' type="range" min="3" max="65" value="35">
+              <p>65</p>
             </div>
         </div>
           <div class = 'over-background' style="text-align:center;padding-left:20%;padding-right:20%;">
             <h4 style="display: inline;font-family:endor;">Num. Hexagons (Vertical)</h4>
             <div class = 'row'>
               <p>3</p>
-              <input id = 'number_hex_v' type="range" min="3" max="60" value="45">
-              <p>60</p>
+              <input id = 'number_hex_v' type="range" min="3" max="45" value="25">
+              <p>45</p>
             </div>
         </div>
           <div id = 'make_hex' class = 'dnd-button' style="font-size: x-large;margin: 15px; padding: 10px;">Create Hex Map</div>
@@ -136,6 +136,14 @@
           ['wooded','desert']],
           delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
       );
+
+      //find_adjacent();
+      //find_adjacent(
+      //    target_types = ['swamp', 'desert'],
+      //    terrain_replacers = ['woods', 'open'],
+      //    delay = 500
+      //);
+
     });
 
       // Screen resize event.

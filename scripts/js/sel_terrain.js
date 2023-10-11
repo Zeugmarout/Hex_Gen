@@ -8,7 +8,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
         number_of_geomorphs = list_of_geomorphs.length;
 
 
-        console.log(`Applying ${terrain_type} with assign terrain function.`);
+        console.log(`Applying ${terrain_type}...`);
 
 
         // Set limits //
@@ -53,7 +53,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                 // A new anchor is chosen for each application of the geomorph.
                 anchor_id = Math.floor(Math.random() * viable_hexes_for_terrain.length);
                 //anchor_hex = document.getElementById('hex_' + anchor_id);
-                console.log(`${anchor_id} is the anchor id for ${morph_name}`);
+                console.log(`${anchor_id} is the anchor id for ${morph_name} at ${prop_hexes_of_this_morph}`);
                 // Solve for the row and column coordinates of the anchor hexagon.
                 anchor_hex_row = anchor_id % numRows;
                 //console.log(`anchor hex row is ${anchor_hex_row}`);  
@@ -101,7 +101,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         if(direction == 'vertical'){    // currently unused because only applying horizontally...
                             // Solve for the uniqueID of the hexagon we're looking at.
                             uniqueID = (numRows) * (map_col - 1) + map_row;
-                            console.log(`uniqueID is ${uniqueID}`);       
+                            //console.log(`uniqueID is ${uniqueID}`);       
                         }
                         //console.log('hex unique ID is ' + uniqueID);
                         if(direction == 'horizontal'){
@@ -167,8 +167,6 @@ function select_terrain_type(
         this_terrain = terrain_types[i];
         this_proportion = terrain_proportions[i];
         this_replacement_list = terrain_replace_list[i];
-
-
         //console.log(`About to apply ${this_terrain} from terrain application loop.`)
         // commented out for now. Note that the loop below is one step out of sync with assign terrain, but it makes no actual difference.
         // uncomment the log to see what I mean.
@@ -176,7 +174,7 @@ function select_terrain_type(
 
 
 
-        // Apply the loop with a 1-second delay between rounds.
+        // Apply the loop with a delay between rounds.
         setTimeout(function() {
             assign_terrain(this_terrain, this_proportion, this_replacement_list);
             i++;                    //  increment the counter
@@ -193,8 +191,26 @@ function select_terrain_type(
                     });
                 });
                 open_hexes.map(k => k.classList.add('open'));
+
+            //   function find_adjacent () {
+            //       let swamps = document.getElementsByClassName('swamp');
+            //       let swamplist = [];
+            //       for(let x = 0; x < swamps.length; x++){
+            //           hex_to_check = swamps[x];
+            //           id_number = hex_to_check.uniqueID;
+            //           swamplist.push(id_number;)
+            //           
+            //
+            //       }
+            //       console.log(swamplist);
+            //       
+            //
+            //   
+            //   find_adjacent();
+
             }    
         }, delay)
     }
     terrain_application_loop();
+
 }
