@@ -154,6 +154,25 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
     });
 }
 
+function cleanup_adjacent (target__terrain_type, disallowed_neighbors, replacement_type) {
+    // pseudocode:
+    // make list of all hexes with the target terrain type
+    let target_list = document.getElementsByClassName(target__terrain_type);
+    //console.log(target_list);
+    
+    // iterate through it
+    // target_list.forEach()
+    //    
+
+    // for each, check its 6 neighbors for matches to the disallowed types
+    // append these bad hexes to a list
+    // replace all those in the list
+    
+    
+    console.log(`Looking to replace ${disallowed_neighbors}s near ${target__terrain_type}s with ${replacement_type}!`);
+
+}
+
 
 
 
@@ -169,17 +188,9 @@ function select_terrain_type(
         this_terrain = terrain_types[i];
         this_proportion = terrain_proportions[i];
         this_replacement_list = terrain_replace_list[i];
-        
-        // *** commented out for now. Note that the loop below is one step out of sync with assign terrain, but it makes no actual difference.
-        // uncomment the log to see what I mean.
-
-
-
-
+    
         // Apply the loop with a delay between rounds.
-        setTimeout(function() {
-            
-                                
+        setTimeout(function() {  
             if (i < terrain_types.length) {            //  if the counter is less than the # of terrain types to add,
                 console.log(`About to apply ${this_terrain} from terrain application loop.`)
                 assign_terrain(this_terrain, this_proportion, this_replacement_list);
@@ -198,21 +209,8 @@ function select_terrain_type(
                 });
                 open_hexes.map(k => k.classList.add('open'));
 
-            //   function find_adjacent () {
-            //       let swamps = document.getElementsByClassName('swamp');
-            //       let swamplist = [];
-            //       for(let x = 0; x < swamps.length; x++){
-            //           hex_to_check = swamps[x];
-            //           id_number = hex_to_check.uniqueID;
-            //           swamplist.push(id_number;)
-            //           
-            //
-            //       }
-            //       console.log(swamplist);
-            //       
-            //
-            //   
-            //   find_adjacent();
+                cleanup_adjacent('swamp', ["desert", "mountain"], 'wooded');    // (type to look at; disallowed neighbors; replacement type)
+                cleanup_adjacent('desert', ["wooded"], 'open'); 
 
             }    
         }, delay)
