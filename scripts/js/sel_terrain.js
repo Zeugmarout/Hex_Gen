@@ -16,32 +16,28 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
         num_hexes_of_this_morph = 0;
         total_num_hexes = document.getElementsByClassName('hex-center').length;
         prop_hexes_of_this_morph = 0;
-        let viable_hexes_for_terrain = range(1,(numRows*numCols));
+        let viable_hexes_for_terrain = range(1,(total_num_hexes));
 
 
         // This loop adds a geomorph to the map at a random anchor hexagon's position;
         // The loop continues until either we've reached the terrain type's ideal proportion,
         // or we've done 3000 loops (to prevent infinite looping...).
         for(let i = 0; prop_hexes_of_this_morph <= proportion_terrain & i < 3000; i++) {
-
-
-            //for (let morph = 0; morph < number_of_geomorphs; morph++) {
+            //for (let morph = 0; morph < number_of_geomorphs; morph++) {   // %%% cut
             morph = Math.floor(Math.random() * number_of_geomorphs); //Get random index integer based on # of geo options.
 
 
             // Find dimensions of geomorph. We use this # of rows and # of cols in a loop later on
             // to cycle through every 'cell' of the geomorph, comparing it with a hexagon in our map and
             // applying the geomorph terrain type to the hexagon.
-            first_col_name = Object.keys(m_geo_stock[list_of_geomorphs[morph]])[0];
-            number_rows_in_geomorph = m_geo_stock[list_of_geomorphs[morph]][first_col_name].length;
-            number_cols_in_geomorph = Object.keys(m_geo_stock[list_of_geomorphs[morph]]).length;
-
-
+            first_row_name = Object.keys(m_geo_stock[list_of_geomorphs[morph]])[0];     // **SWAPPED FROM COL
+            number_rows_in_geomorph = Object.keys(m_geo_stock[list_of_geomorphs[morph]]).length;    // **SWAPPED THE TWO VARS
+            number_cols_in_geomorph = m_geo_stock[list_of_geomorphs[morph]][first_row_name].length;
+            
             // Get the morph name (e.g. 'mountain_1') and also this name without the '_1' suffix.
             // We use the latter to add a class of this terrain type to a given hexagon.
             morph_name = list_of_geomorphs[morph];
             morph_name_no_suffix = morph_name.replace(/_[0-9]+$/, '');
-
 
             // Get the number and proportion of hexagons of this terrain type; used to test if the loop
             // should apply this terrain type to any more hexagons, or if it's already reached the ideal proportion for this type.
@@ -51,7 +47,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                 // == running %ile of e.g. swamp hexes
 
 
-            if(prop_hexes_of_this_morph <= proportion_terrain) {            // redundant? See above for loop ln 23
+            if(prop_hexes_of_this_morph <= proportion_terrain) {            // %%% redundant? See above for loop ln 23
                 // Find our anchor id Hexagon.
                 // Chosen randomly from amongst hexes not already converted into this terrain type.
                 // A new anchor is chosen for each application of the geomorph.
@@ -60,21 +56,14 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                 console.log(`${anchor_id} is the anchor id for ${morph_name}`);
                 // Solve for the row and column coordinates of the anchor hexagon.
                 anchor_hex_row = anchor_id % numRows;
-                console.log(`anchor hex row is ${anchor_hex_row}`);  
-                anchor_hex_col = Math.ceil(anchor_id / numRows);
-                console.log(`anchor hex column is ${anchor_hex_col}`);    // These are calculating correctly
+                //console.log(`anchor hex row is ${anchor_hex_row}`);  
+                let anchor_hex_col = Math.ceil(anchor_id / numRows);
+                //console.log(`anchor hex column is ${anchor_hex_col}`);    // These are calculating correctly
 
-
-                        // Functional Alex Addition
-                        // "Is Even"
-                        // To deal with the even-row sag of the hex-map, we want to apply our geomorphs on odd rows only.
-                        // Simply because all the data-entry for geomorphs will be done with that even-row-sag assumption.
-                        // All geomorphs will start with a filled hex (1) in their leftmost column rather than a blank (0).
-                        // We want a function to check whether r_col_to_start is odd or even.
-                        // If it's even, we kick the morph over by one column.
-                        // if(anchor_hex_col % 2 === 0) {
-                        //     anchor_hex_col ++;
-                        // }
+                // Alex Addition "Is Even": To deal with the even-row sag all geomorphs will start on an odd column.
+                if(anchor_hex_col % 2 === 0) {
+                    anchor_hex_col ++;
+                }
 
 
                 //directions = ['horizontal','vertical'];
@@ -84,7 +73,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                
                 // Calculate hex ID for this iteration of the loop.
                 // These loops' start and end integers are relative to the dimensions of the geomorph file.
-                for (let temp_col_number = 1; temp_col_number <= number_cols_in_geomorph; temp_col_number++) {
+                for (let temp_col_number = 0; temp_col_number <= number_cols_in_geomorph; temp_col_number++) {
                     for (let temp_row_number = 0; temp_row_number < number_rows_in_geomorph; temp_row_number++) {                        
                         // Use the anchor's coordinates to offset the overlaid geomorph lattice;
                         // temp_col_number and temp_row_number are the temporary references to morph,
@@ -101,9 +90,9 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                         // THUS IT IS ALSO MIRRORING AND ROTATING THE MORPH!!!!
 
 
-                        map_col = temp_col_number + anchor_hex_col - 1; // - 1 because temp_col_number started at 1, not zero 
+                        map_col = anchor_hex_col + temp_col_number;  // %%% - 1; // - 1 because temp_col_number started at 1, not zero 
                         //console.log(`map_col is ${map_col}`);
-                        map_row = temp_row_number + anchor_hex_row;     
+                        map_row = anchor_hex_row + temp_row_number;     
                         //console.log(`map_row is ${map_row}`);   // THESE ARE WORKING
                        
                         // map_col and _row are the positions on the hexmap of the particular hex being overwritten
@@ -119,20 +108,17 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                             uniqueID = (numRows) * (map_row - 1) + map_col; // Seems to render morphs horizontally (good) but not to edges of map
                             //console.log(`uniqueID is ${uniqueID}`);    
                         }
-                        //if(direction == 'diagonal'){
-                        //    // Haven't figured this one out yet...
-                        //}
 
 
                         // Pull out this hexagon ('hex_to_modify').
                         hex_to_mod = document.getElementById('hex_' + uniqueID);
                         //geo_col_number = temp_row_number + 1;   // remember that in geomorphs rows are labeled columns for now;
-                        //geo_row_value = temp_col_number - 1;
+                        geo_row_value = temp_row_number + 1;
 
                         // Check that this hexagon exists! If not, do nothing.
                         if(hex_to_mod != null) {
                             // Check the geomorph cell's value; if it's 1 (i.e., TRUE), apply it to the hexagon!
-                            if(m_geo_stock[morph_name]['col_' + temp_col_number][temp_row_number] === 1) {    
+                            if(m_geo_stock[morph_name]['row_' + geo_row_value][temp_col_number] === 1) {    
                                 // tried switching around the col and row numbers inside there, try again
                                
                                 // Quick check: any other terrain types to replace? If so, remove them here.
