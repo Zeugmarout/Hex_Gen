@@ -53,9 +53,9 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
                 // A new anchor is chosen for each application of the geomorph.
                 anchor_id = Math.floor(Math.random() * viable_hexes_for_terrain.length);
                 //anchor_hex = document.getElementById('hex_' + anchor_id);
-                console.log(`${anchor_id} is the anchor id for ${morph_name} at ${prop_hexes_of_this_morph}`);
+                console.log(`${anchor_id} is the anchor id for ${morph_name}.`);
                 // Solve for the row and column coordinates of the anchor hexagon.
-                anchor_hex_row = anchor_id % numRows;
+                let anchor_hex_row = anchor_id % numRows;
                 //console.log(`anchor hex row is ${anchor_hex_row}`);  
                 let anchor_hex_col = Math.ceil(anchor_id / numRows);
                 //console.log(`anchor hex column is ${anchor_hex_col}`);    // These are calculating correctly
@@ -149,6 +149,8 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
         number_of_terrain = document.getElementsByClassName(morph_name_no_suffix).length;
         prop_hexes_of_this_morph = number_of_terrain / total_num_hexes;
         }
+        
+        console.log(`Total ${morph_name_no_suffix}s: ${number_of_terrain}, or ${prop_hexes_of_this_morph}.`) 
     });
 }
 
@@ -167,8 +169,8 @@ function select_terrain_type(
         this_terrain = terrain_types[i];
         this_proportion = terrain_proportions[i];
         this_replacement_list = terrain_replace_list[i];
-        //console.log(`About to apply ${this_terrain} from terrain application loop.`)
-        // commented out for now. Note that the loop below is one step out of sync with assign terrain, but it makes no actual difference.
+        
+        // *** commented out for now. Note that the loop below is one step out of sync with assign terrain, but it makes no actual difference.
         // uncomment the log to see what I mean.
 
 
@@ -176,10 +178,14 @@ function select_terrain_type(
 
         // Apply the loop with a delay between rounds.
         setTimeout(function() {
-            assign_terrain(this_terrain, this_proportion, this_replacement_list);
-            i++;                    //  increment the counter
-            if (i <= terrain_types.length) {           //  if the counter is less than the # of terrain types to add,
-                terrain_application_loop()            //   do loop again.
+            
+                                
+            if (i < terrain_types.length) {            //  if the counter is less than the # of terrain types to add,
+                console.log(`About to apply ${this_terrain} from terrain application loop.`)
+                assign_terrain(this_terrain, this_proportion, this_replacement_list);
+                delay;
+                i++;                                    //  increment the counter
+                terrain_application_loop();             //   do loop again.
             } else {
                 // Any hexes that are left over and didn't get any terrain type applied?
                 // Make them into 'open' type!
