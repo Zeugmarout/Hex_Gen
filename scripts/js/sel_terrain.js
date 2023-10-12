@@ -165,22 +165,22 @@ function find_adjacent (hex_id) {                               // This is a typ
     // if the current hex is on an even (offset/sagging) column, 
     if(current_hex_col % 2 === 0) {
         let neighbors = [
-        document.getElementById(`hex_${hex_id - 1}`),  // N  
-        document.getElementById(`hex_${hex_id_as_int + num_row_count}`),             // NE
-        document.getElementById(`hex_${hex_id_as_int + num_row_count + 1}`),           // SE
-        document.getElementById(`hex_${hex_id_as_int + 1}`),                   // S
-        document.getElementById(`hex_${hex_id - numRows + 1}`),           // SW
-        document.getElementById(`hex_${hex_id - numRows}`)]             // NW
+        document.getElementById(`hex_${hex_id - 1}`),                           // N  
+        document.getElementById(`hex_${hex_id_as_int + num_row_count}`),        // NE
+        document.getElementById(`hex_${hex_id_as_int + num_row_count + 1}`),    // SE
+        document.getElementById(`hex_${hex_id_as_int + 1}`),                    // S
+        document.getElementById(`hex_${hex_id - numRows + 1}`),                 // SW
+        document.getElementById(`hex_${hex_id - numRows}`)]                     // NW
         return neighbors;
     } else {
         // hex is odd
         let neighbors = [
-        document.getElementById(`hex_${hex_id - 1}`),            // N
+        document.getElementById(`hex_${hex_id - 1}`),                           // N
         document.getElementById(`hex_${hex_id_as_int + num_row_count - 1}`),    // NE
-        document.getElementById(`hex_${hex_id_as_int + num_row_count}`),      // SE
-        document.getElementById(`hex_${hex_id_as_int + 1}`),              // S
-        document.getElementById(`hex_${hex_id - numRows}`),        // SW
-        document.getElementById(`hex_${hex_id - numRows - 1}`)]       // NW
+        document.getElementById(`hex_${hex_id_as_int + num_row_count}`),        // SE
+        document.getElementById(`hex_${hex_id_as_int + 1}`),                    // S
+        document.getElementById(`hex_${hex_id - numRows}`),                     // SW
+        document.getElementById(`hex_${hex_id - numRows - 1}`)]                 // NW
         return neighbors;     
     }
 
