@@ -127,13 +127,13 @@
 
       //select_terrain_type();
       select_terrain_type(
-        terrain_types = ['wooded', 'swamp', 'desert', 'mountain'],
-        terrain_proportions = [0.3418,0.0345,0.08546,0.1837],
+        terrain_types = ['wooded', 'desert', 'mountain', 'swamp'],
+        terrain_proportions = [0.3418,0.08546,0.1837,0.0345],
         terrain_replace_list = [
           [], 
-          ['wooded'], // 'Swamp' replaces 'Wooded'
-          ['swamp','wooded'],
-          ['wooded','desert']],
+          ['wooded'], 
+          ['wooded','desert'],
+          ['wooded','desert','mountain']], // 'Desert' replaces all 
           delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
       );
 

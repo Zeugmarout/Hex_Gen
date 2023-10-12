@@ -154,24 +154,91 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
     });
 }
 
-function cleanup_adjacent (target__terrain_type, disallowed_neighbors, replacement_type) {
-    // pseudocode:
-    // make list of all hexes with the target terrain type
-    let target_list = document.getElementsByClassName(target__terrain_type);
-    //console.log(target_list);
-    
-    // iterate through it
-    // target_list.forEach()
-    //    
+function find_adjacent (hex_id) {                               // This is a type mismatch, 
+    let current_hex_col = Math.ceil(hex_id / numRows);
 
-    // for each, check its 6 neighbors for matches to the disallowed types
-    // append these bad hexes to a list
-    // replace all those in the list
+    // parsed variables 
+    hex_id_as_int = parseInt(hex_id);
+    num_row_count = parseInt(numRows);
+    console.log(num_row_count);
     
-    
-    console.log(`Looking to replace ${disallowed_neighbors}s near ${target__terrain_type}s with ${replacement_type}!`);
+    // if the current hex is on an even (offset/sagging) column, 
+    if(current_hex_col % 2 === 0) {
+        let neighbors = [
+        document.getElementById(`hex_${hex_id - 1}`),  // N  
+        document.getElementById(`hex_${hex_id_as_int + num_row_count}`),             // NE
+        document.getElementById(`hex_${hex_id_as_int + num_row_count + 1}`),           // SE
+        document.getElementById(`hex_${hex_id_as_int + 1}`),                   // S
+        document.getElementById(`hex_${hex_id - numRows + 1}`),           // SW
+        document.getElementById(`hex_${hex_id - numRows}`)]             // NW
+        return neighbors;
+    } else {
+        // hex is odd
+        let neighbors = [
+        document.getElementById(`hex_${hex_id - 1}`),            // N
+        document.getElementById(`hex_${hex_id_as_int + num_row_count - 1}`),    // NE
+        document.getElementById(`hex_${hex_id_as_int + num_row_count}`),      // SE
+        document.getElementById(`hex_${hex_id_as_int + 1}`),              // S
+        document.getElementById(`hex_${hex_id - numRows}`),        // SW
+        document.getElementById(`hex_${hex_id - numRows - 1}`)]       // NW
+        return neighbors;     
+    }
 
 }
+
+
+function cleanup_adjacent (target__terrain_type, disallowed_neighbors, replacement_type) {
+    console.log(`Looking to replace ${disallowed_neighbors}s near ${target__terrain_type}s with ${replacement_type}.`);
+    
+    // make list of all hexes with the target terrain type
+    let target_list = document.getElementsByClassName(target__terrain_type);
+    //console.log(target_list); // Working
+  
+    // Iterate through div elements by their IDs
+    for (let i = 0; i < target_list.length; i++) {
+        const div = target_list[i];     // pull out div
+        hex_name = div.id;              // access "hex_xyz"
+        id_number = hex_name.slice(4);  // just the ID number
+
+        // for each, check its 6 neighbors... 
+        neighboring_hexes = Array.from(find_adjacent(id_number));
+
+        // it works up to this point. 
+
+        /* From here on it causes an infinite loop that crashes the browser.
+        Try appending neighboring_hexes to a single array on ln 205 then running it through the two methods below.
+
+        // ...for matches to the disallowed types and replace with the desired replacement type. 
+        for (i in neighboring_hexes) {
+            this_exact_hex = neighboring_hexes[i];
+            console.log(this_exact_hex);
+            delay;
+        //     
+        //     if (this_exact_hex != null) {
+        //         terrain_to_replace = disallowed_neighbors[i];
+        //         // Tell user in console log that we are scanning for other terrain type to be replaced...
+        //         //console.log('Looking to replace ' + terrain_to_replace + ' with ' + morph_name_no_suffix);
+        //         // Check the class name list of the hexagon; does it have this old terrain type?
+        //         if(hex_to_mod.classList.contains(terrain_to_replace)){
+        //             // Remove old terrain type from class list.
+        //             hex_to_mod.classList.remove(terrain_to_replace);
+        //             // Inform user in console log.
+        //             //console.log('Overwrote ' + terrain_to_replace + ' with ' + morph_name_no_suffix + ' for ' + hex_to_mod.id);
+        //         }
+        //     }
+        }
+        // terrain_types = ["open", "wooded", "swamp", "desert", "mountain"]; // All allowable terrain types;
+        // replaced_hexes = neighboring_hexes.filter(function (element) {
+        //     return !excluded_terrain_types.some(function (excluded_terrain_types) {
+        //     return element.classList.contains(excluded_terrain_types);
+        //     });
+        // });
+        // replaced_hexes.map(k => k.classList.add(replacement_type));
+
+        */
+    }
+}
+
 
 
 
@@ -208,9 +275,10 @@ function select_terrain_type(
                     });
                 });
                 open_hexes.map(k => k.classList.add('open'));
+                delay;
 
                 cleanup_adjacent('swamp', ["desert", "mountain"], 'wooded');    // (type to look at; disallowed neighbors; replacement type)
-                cleanup_adjacent('desert', ["wooded"], 'open'); 
+                //cleanup_adjacent('desert', ["wooded"], 'open'); 
 
             }    
         }, delay)
