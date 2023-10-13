@@ -12,9 +12,9 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
 
 
         // Set limits //
+        total_num_hexes = document.getElementsByClassName('hex-center').length;
         proportion_terrain = target_proportion; // This could be a user input later on.
         num_hexes_of_this_morph = 0;
-        total_num_hexes = document.getElementsByClassName('hex-center').length;
         prop_hexes_of_this_morph = 0;
         let viable_hexes_for_terrain = range(1,(total_num_hexes));
 
@@ -149,20 +149,25 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list){
         number_of_terrain = document.getElementsByClassName(morph_name_no_suffix).length;
         prop_hexes_of_this_morph = number_of_terrain / total_num_hexes;
         }
-        
-        console.log(`Total ${morph_name_no_suffix}s: ${number_of_terrain}, or ${prop_hexes_of_this_morph}.`) 
     });
 }
 
-function find_adjacent (hex_id) {                               // This is a type mismatch, 
+function final_count_proportion (type_to_count) {
+    let count = document.getElementsByClassName(type_to_count).length;
+    let final_proportion = count / total_num_hexes;
+    return final_proportion;
+}
+
+
+
+function find_adjacent (hex_id) {                               
     let current_hex_col = Math.ceil(hex_id / numRows);
 
     // parsed variables 
     hex_id_as_int = parseInt(hex_id);
     num_row_count = parseInt(numRows);
-    console.log(num_row_count);
     
-    // if the current hex is on an even (offset/sagging) column, 
+    // if the current hex is on an even (sagging) column:
     if(current_hex_col % 2 === 0) {
         let neighbors = [
         document.getElementById(`hex_${hex_id - 1}`),                           // N  
@@ -188,11 +193,10 @@ function find_adjacent (hex_id) {                               // This is a typ
 
 
 function cleanup_adjacent (target__terrain_type, disallowed_neighbors, replacement_type) {
-    console.log(`Looking to replace ${disallowed_neighbors}s near ${target__terrain_type}s with ${replacement_type}.`);
+    console.log(`Replacing ${disallowed_neighbors}s near ${target__terrain_type}s with ${replacement_type}.`);
     
     // make list of all hexes with the target terrain type
     let target_list = document.getElementsByClassName(target__terrain_type);
-    //console.log(target_list); // Working
   
     // Iterate through div elements by their IDs
     for (let i = 0; i < target_list.length; i++) {
@@ -202,40 +206,17 @@ function cleanup_adjacent (target__terrain_type, disallowed_neighbors, replaceme
 
         // for each, check its 6 neighbors... 
         neighboring_hexes = Array.from(find_adjacent(id_number));
-
-        // it works up to this point. 
-
-        /* From here on it causes an infinite loop that crashes the browser.
-        Try appending neighboring_hexes to a single array on ln 205 then running it through the two methods below.
-
-        // ...for matches to the disallowed types and replace with the desired replacement type. 
-        for (i in neighboring_hexes) {
-            this_exact_hex = neighboring_hexes[i];
-            console.log(this_exact_hex);
-            delay;
-        //     
-        //     if (this_exact_hex != null) {
-        //         terrain_to_replace = disallowed_neighbors[i];
-        //         // Tell user in console log that we are scanning for other terrain type to be replaced...
-        //         //console.log('Looking to replace ' + terrain_to_replace + ' with ' + morph_name_no_suffix);
-        //         // Check the class name list of the hexagon; does it have this old terrain type?
-        //         if(hex_to_mod.classList.contains(terrain_to_replace)){
-        //             // Remove old terrain type from class list.
-        //             hex_to_mod.classList.remove(terrain_to_replace);
-        //             // Inform user in console log.
-        //             //console.log('Overwrote ' + terrain_to_replace + ' with ' + morph_name_no_suffix + ' for ' + hex_to_mod.id);
-        //         }
-        //     }
-        }
-        // terrain_types = ["open", "wooded", "swamp", "desert", "mountain"]; // All allowable terrain types;
-        // replaced_hexes = neighboring_hexes.filter(function (element) {
-        //     return !excluded_terrain_types.some(function (excluded_terrain_types) {
-        //     return element.classList.contains(excluded_terrain_types);
-        //     });
-        // });
-        // replaced_hexes.map(k => k.classList.add(replacement_type));
-
-        */
+        // ... and replace unwanted types with a new type.
+        disallowed_neighbors.forEach((disallowed_type) => {
+            neighboring_hexes.forEach((hex) => {
+                if (hex != null) {
+                    if (hex.classList.contains(disallowed_type)) {
+                        hex.classList.remove(disallowed_type);
+                        hex.classList.add(replacement_type);
+                    }
+                } 
+            })
+        });
     }
 }
 
@@ -259,7 +240,7 @@ function select_terrain_type(
         // Apply the loop with a delay between rounds.
         setTimeout(function() {  
             if (i < terrain_types.length) {            //  if the counter is less than the # of terrain types to add,
-                console.log(`About to apply ${this_terrain} from terrain application loop.`)
+                //console.log(`About to apply ${this_terrain} from terrain application loop.`)
                 assign_terrain(this_terrain, this_proportion, this_replacement_list);
                 delay;
                 i++;                                    //  increment the counter
@@ -278,9 +259,14 @@ function select_terrain_type(
                 delay;
 
                 cleanup_adjacent('swamp', ["desert", "mountain"], 'wooded');    // (type to look at; disallowed neighbors; replacement type)
-                //cleanup_adjacent('desert', ["wooded"], 'open'); 
-
-            }    
+                cleanup_adjacent('desert', ["wooded"], 'open'); 
+            }
+            // final count data:
+            let terrain_table = []
+            for(k in terrain_types) {
+                terrain_table.push({TerrainType: terrain_types[k], Proportion: final_count_proportion(terrain_types[k])});
+            }
+                console.table(terrain_table);    
         }, delay)
     }
     terrain_application_loop();

@@ -128,12 +128,15 @@
       //select_terrain_type();
       select_terrain_type(
         terrain_types = ['wooded', 'desert', 'mountain', 'swamp'],
-        terrain_proportions = [0.3418,0.08546,0.1837,0.0345],
+        // ideal proportions = [0.2976, 0.0585, 0.1837, 0.0345],
+        terrain_proportions = [0.4418, 0.0685, 0.1937, 0.0345], // we increase the earlier types because so many are overwritten
         terrain_replace_list = [
-          [], 
+          [],   // wooded first, replaces nothing 
           ['wooded'], 
           ['wooded','desert'],
-          ['wooded','desert','mountain']], // 'Desert' replaces all 
+          ['wooded','desert','mountain'] // 'swamp' replaces all 
+          ], // Alex note: I tried adding in another iteration of wooded, but it tends to overwrite the other features too much.
+            // Just going to increase the initial percentage instead. 
           delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
       );
 
