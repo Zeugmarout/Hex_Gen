@@ -54,13 +54,53 @@
     z-index: -1;
 }
 
-.stronghold {
-    background: url(../mats/castle_small.png);
+.desert_stronghold {
+    background: url(../mats/desert_stronghold.png);
     top: 12%;
     left: 12%;
-    size: cover;
-    z-index: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
 }
+.mountain_stronghold {
+    background: url(../mats/mountain_stronghold.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.open_stronghold {
+    background: url(../mats/open_stronghold.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.swamp_stronghold {
+    background: url(../mats/swamp_stronghold.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.wooded_stronghold {
+    background: url(../mats/wooded_stronghold.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+
+
 .hex-center:hover {
     transform: translateY(-15%) !important; /* Move 20px upward on hover */
 }

@@ -152,7 +152,7 @@ function assign_terrain(terrain_type, target_proportion, terrain_replace_list) {
             prop_hexes_of_this_morph = number_of_terrain / total_num_hexes;
             }
         });    
-    //  resolve();
+    //    resolve();
     //});        
 }
 
@@ -162,8 +162,6 @@ function final_count_proportion (type_to_count) {
     let final_proportion = count / total;
     return final_proportion;
 }
-
-
 
 function find_adjacent (hex_id) {                               
     let current_hex_col = Math.ceil(hex_id / numRows);
@@ -196,7 +194,6 @@ function find_adjacent (hex_id) {
 
 }
 
-
 function cleanup_adjacent (target__terrain_type, disallowed_neighbors, replacement_type) {
     console.log(`Replacing ${disallowed_neighbors}s near ${target__terrain_type}s with ${replacement_type}.`);
     
@@ -225,36 +222,7 @@ function cleanup_adjacent (target__terrain_type, disallowed_neighbors, replaceme
     }
 }
 
-/*
-function assign_strongholds(this_SH_terrain, stronghold_chance) {
-    // Find all hexes of our terrain type
-    const target_hexes = Array.from(document.getElementsByClassName(this_SH_terrain));
-    console.log(`Assigning SHs to ${this_SH_terrain}, ${target_hexes}`);
-
-    // Loop through them and roll a chance for having a stronghold
-    target_hexes.forEach(function(hex_to_mod_for_SH) {
-        //console.log(hex_to_mod_for_SH);
-        let roll = Math.random(0, 1);
-        //console.log(`Roll is ${roll}`)
-        if (roll <= stronghold_chance) {
-            hex_to_mod_for_SH.classList.add('stronghold');
-            //console.log(`Added stronghold to ${hex_to_mod_for_SH}`);
-        }
-    }) 
-    /* 
-    for (k in target_hexes) {
-        hex_to_mod = target_hexes[k];
-        console.log(hex_to_mod);
-        let roll = Math.random();
-        if (roll <= this_proportion) {
-            hex_to_mod.classList.add('stronghold');
-        }
-    }
-    
-}   */
-
-
-function select_terrain_type(
+async function select_terrain_type(
     terrain_types,
     terrain_proportions,
     terrain_replace_list,
@@ -262,53 +230,63 @@ function select_terrain_type(
     //town_chances,
     delay
     ){
-    var i = 0;
+    return new Promise((resolve) => {
+        let i = 0;
    
-    function terrain_application_loop() {
-        this_terrain = terrain_types[i];
-        this_proportion = terrain_proportions[i];
-        this_replacement_list = terrain_replace_list[i];
-        //stronghold_probability = stronghold_chances[i];
-        //town_probability = town_chances[i]
-    
+        function terrain_application_loop() {
+            this_terrain = terrain_types[i];
+            this_proportion = parseFloat(terrain_proportions[i]);
+            this_replacement_list = terrain_replace_list[i];
+            //stronghold_probability = stronghold_chances[i];
+            //town_probability = town_chances[i]
         
-        // Apply the loop with a delay between rounds.
-        setTimeout(function() {  
-            if (i < terrain_types.length) {            //  if the counter is less than the # of terrain types to add,
-            //    console.log(`About to apply ${this_terrain} from terrain application loop.`);
-                assign_terrain(this_terrain, this_proportion, this_replacement_list);
-                delay;
-                i++;                                    //  increment the counter
-                terrain_application_loop();             //   do loop again.
-                     } else {
-                // Any hexes that are left over and didn't get any terrain type applied?
-                // Make them into 'open' type!
-                all_hexes = Array.from(document.getElementsByClassName('hex-center'));
-                excluded_terrain_types = ["wooded", "swamp", "desert", "mountain"];
-                open_hexes = all_hexes.filter(function (element) {
-                    return !excluded_terrain_types.some(function (excluded_terrain_types) {
-                    return element.classList.contains(excluded_terrain_types);
-                    });
-                });
-                open_hexes.map(k => k.classList.add('open'));
-                delay;
 
-                cleanup_adjacent('swamp', ["desert", "mountain"], 'wooded');    // (type to look at; disallowed neighbors; replacement type)
-                cleanup_adjacent('desert', ["wooded"], 'open'); 
-                delay;
-                // final count data:
-                let terrain_table = []
-                for(k in terrain_types) {
-                    terrain_table.push({TerrainType: terrain_types[k], Proportion: final_count_proportion(terrain_types[k])});
+            // Apply the loop with a delay between rounds.
+            setTimeout(function() {  
+                if (i < terrain_types.length) {            //  if the counter is less than the # of terrain types to add,
+                //    console.log(`About to apply ${this_terrain} from terrain application loop.`);
+                    assign_terrain(this_terrain, this_proportion, this_replacement_list);
+                    delay;
+                    i++;                                    //  increment the counter
+                    terrain_application_loop();             //   do loop again.
+                         } else {
+                    // Any hexes that are left over and didn't get any terrain type applied?
+                    // Make them into 'open' type!
+                    all_hexes = Array.from(document.getElementsByClassName('hex-center'));
+                    excluded_terrain_types = ["wooded", "swamp", "desert", "mountain"];
+                    open_hexes = all_hexes.filter(function (element) {
+                        return !excluded_terrain_types.some(function (excluded_terrain_types) {
+                        return element.classList.contains(excluded_terrain_types);
+                        });
+                    });
+                    open_hexes.map(k => k.classList.add('open'));
+                    delay;
+
+                    cleanup_adjacent('swamp', ["desert", "mountain"], 'wooded');    // (type to look at; disallowed neighbors; replacement type)
+                    cleanup_adjacent('desert', ["wooded"], 'open'); 
+                    delay;
+                    // final count data:
+                    let terrain_table = []
+                    for(k in terrain_types) {
+                        terrain_table.push({TerrainType: terrain_types[k], Proportion: final_count_proportion(terrain_types[k])});
+                    }
+                    console.table(terrain_table);  
                 }
-                console.table(terrain_table);  
-            }
-        }, delay)
-    }
-    terrain_application_loop();
+            }, delay)
+        }
+        terrain_application_loop();
+        resolve();
+    });
 }            
   
 
+
+
+
+
+
+
+// ATTEMPT AT MERGING ASYNC AND THE DELAY
 /*
 function select_terrain_type(
     terrain_types,
@@ -364,49 +342,32 @@ function select_terrain_type(
 */
 
 
-// Apply strongholds and towns, using probabilities from index
-function apply_strongholds (
-    on_which_terrain_types, 
-    chance_for_SH, 
-    //delay
-    ) {
-    let counter = 0;
-   
-    function stronghold_application_loop() {
-        this_terrain = on_which_terrain_types[counter];
-        this_proportion = chance_for_SH[counter];
-        
-        // Apply the loop with a delay between rounds.
-        //setTimeout(function() {  
-            if (counter < on_which_terrain_types.length) {            
-                console.log(`Applying strongholds to ${this_terrain}...`)
-                function assign_strongholds(this_SH_terrain, stronghold_chance) {
-                    // Find all hexes of our terrain type
-                    const target_hexes = Array.from(document.getElementsByClassName(this_SH_terrain));
-                    //console.log(`Target SHs to ${this_SH_terrain}, ${target_hexes}`);
-                
-                    // Loop through them and roll a chance for having a stronghold
-                    target_hexes.forEach(function(hex_to_mod_for_SH) {
-                        //console.log(hex_to_mod_for_SH);
-                        let roll = Math.random(0, 1);
-                        //console.log(`Roll is ${roll}`)
-                        if (roll <= stronghold_chance) {
-                            hex_to_mod_for_SH.classList.add('stronghold');
-                            //console.log(`Added stronghold to ${hex_to_mod_for_SH}`);
-                        }
-                    }) 
-                }
-                
-                
-                assign_strongholds(this_terrain, this_proportion);
-                //delay;
-                counter++;                                    //  increment the counter
-                stronghold_application_loop();             //   do loop again.  
-            }
-        //}, delay)
+
+
+/*
+function assign_strongholds(this_SH_terrain, stronghold_chance) {
+    // Find all hexes of our terrain type
+    const target_hexes = Array.from(document.getElementsByClassName(this_SH_terrain));
+    console.log(`Assigning SHs to ${this_SH_terrain}, ${target_hexes}`);
+
+    // Loop through them and roll a chance for having a stronghold
+    target_hexes.forEach(function(hex_to_mod_for_SH) {
+        //console.log(hex_to_mod_for_SH);
+        let roll = Math.random(0, 1);
+        //console.log(`Roll is ${roll}`)
+        if (roll <= stronghold_chance) {
+            hex_to_mod_for_SH.classList.add('stronghold');
+            //console.log(`Added stronghold to ${hex_to_mod_for_SH}`);
+        }
+    }) 
+    /* 
+    for (k in target_hexes) {
+        hex_to_mod = target_hexes[k];
+        console.log(hex_to_mod);
+        let roll = Math.random();
+        if (roll <= this_proportion) {
+            hex_to_mod.classList.add('stronghold');
+        }
     }
-    stronghold_application_loop();
-}
-
-
-
+    
+}   */

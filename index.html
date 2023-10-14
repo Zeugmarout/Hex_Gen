@@ -13,6 +13,7 @@
     <script src="./scripts/js/render_hex.js"></script>
     <script src="./scripts/js/create_clouds.js"></script>
     <script src="./scripts/js/sel_terrain.js"></script>
+    <script src="./scripts/js/assign_strongholds.js"></script>
     <script src="./scripts/js/make_hex_map.js"></script>
     <link rel="stylesheet" href="./css/styles.css" />
     <link rel="stylesheet" href="./css/hexagon_styles.css" />
@@ -117,6 +118,34 @@
         make_clouds = true);
       });
 
+      /*
+      // Chat code to fix async problem....
+      const random_terrain_button = document.getElementById('randomize_terrain');
+      const features_button = document.getElementById('apply_features');
+
+      random_terrain_button.addEventListener('click', async function () {
+        numRows = number_hex_v.value;
+        numCols = number_hex_h.value;
+        container_height = document.getElementById('hex_gen_page').offsetHeight;
+        container_width = document.getElementById('hex_gen_page').offsetWidth;
+      
+        await select_terrain_type({
+          terrain_types: ['wooded', 'desert', 'mountain', 'swamp', 'open'],
+          terrain_proportions: [0.4418, 0.0685, 0.1937, 0.0345, 0.000001],
+          terrain_replace_list: [[], ['wooded'], ['wooded', 'desert'], ['wooded', 'desert', 'mountain'], []],
+          delay: 500,
+        });
+      
+        await apply_strongholds({
+          on_which_terrain_types: ['wooded', 'desert', 'mountain', 'swamp', 'open'],
+          chance_for_stronghold: [0.008245877061, 0, 0.01049475262, 0.0007496251874, 0],
+          delay: 500,
+        });
+      }); 
+      */
+            
+      
+      
       const random_terrain_button = document.getElementById('randomize_terrain');
     
       random_terrain_button.addEventListener('click', function() {
@@ -137,30 +166,29 @@
           ['wooded','desert'],
           ['wooded','desert','mountain'] // 'swamp' replaces all 
           ], 
-          //stronghold_proportions = [0.008245877061, 0, 0.01049475262, 0.0007496251874, 0],
-          
-          //town_proportions = [0.0007496251874, 0, 0, 0, 0.005997001499],
           delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
       );
     });
 
+       
     const features_button = document.getElementById('apply_features');
     
-      random_terrain_button.addEventListener('click', function() {
-        /*
+      features_button.addEventListener('click', function() {
+        
         numRows = number_hex_v.value;
         numCols = number_hex_h.value;
         container_height = document.getElementById('hex_gen_page').offsetHeight;
         container_width = document.getElementById('hex_gen_page').offsetWidth;
-        */
+        
       apply_strongholds(
         on_which_terrain_types = ['wooded', 'desert', 'mountain', 'swamp', 'open'],
         chance_for_stronghold = [0.008245877061, 0, 0.01049475262, 0.0007496251874, 0], 
           
-          //town_proportions = [0.0007496251874, 0, 0, 0, 0.005997001499],
-        //delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
+        //town_proportions = [0.0007496251874, 0, 0, 0, 0.005997001499],
+        delay = 250 // this number is in milliseconds, and is totally optional; could be 0.
       );
     });
+    
 
 
     
