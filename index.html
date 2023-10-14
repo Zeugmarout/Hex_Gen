@@ -41,6 +41,7 @@
         </div>
           <div id = 'make_hex' class = 'dnd-button' style="font-size: x-large;margin: 15px; padding: 10px;">Create Hex Map</div>
           <div id = 'randomize_terrain' class = 'dnd-button' style="font-size: x-large;margin: 15px; padding: 10px;">Roll up Terrain</div>
+          <div id = 'apply_features' class = 'dnd-button' style="font-size: x-large;margin: 15px; padding: 10px;">Generate Features</div>
           <div class = 'over-background' style="text-align:center;padding-left:20%;padding-right:20%;">
             <div class = 'row'>
               <img id = 'skip_last_audio' src = 'mats/left-arrow.svg' class = 'music-button arrows'></img>
@@ -127,9 +128,9 @@
 
       //select_terrain_type();
       select_terrain_type(
-        terrain_types = ['wooded', 'desert', 'mountain', 'swamp'],
-        // ideal proportions = [0.2976, 0.0585, 0.1837, 0.0345],
-        terrain_proportions = [0.4418, 0.0685, 0.1937, 0.0345], // we increase the earlier types because so many are overwritten
+        terrain_types = ['wooded', 'desert', 'mountain', 'swamp', 'open'],
+        // ideal proportions = [0.2976, 0.0585, 0.1837, 0.0345, 0.4257871064],
+        terrain_proportions = [0.4418, 0.0685, 0.1937, 0.0345, 0.000001], // we increase the earlier types because so many are overwritten
         terrain_replace_list = [
           [],   // wooded first, replaces nothing 
           ['wooded'], 
@@ -137,12 +138,32 @@
           ['wooded','desert','mountain'] // 'swamp' replaces all 
           ], 
           //stronghold_proportions = [0.008245877061, 0, 0.01049475262, 0.0007496251874, 0],
-          stronghold_proportions = [0.05, 0, 0.01049475262, 0.05, 0],
+          
           //town_proportions = [0.0007496251874, 0, 0, 0, 0.005997001499],
           delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
       );
-
     });
+
+    const features_button = document.getElementById('apply_features');
+    
+      random_terrain_button.addEventListener('click', function() {
+        /*
+        numRows = number_hex_v.value;
+        numCols = number_hex_h.value;
+        container_height = document.getElementById('hex_gen_page').offsetHeight;
+        container_width = document.getElementById('hex_gen_page').offsetWidth;
+        */
+      apply_strongholds(
+        on_which_terrain_types = ['wooded', 'desert', 'mountain', 'swamp', 'open'],
+        chance_for_stronghold = [0.008245877061, 0, 0.01049475262, 0.0007496251874, 0], 
+          
+          //town_proportions = [0.0007496251874, 0, 0, 0, 0.005997001499],
+        //delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
+      );
+    });
+
+
+    
 
       // Screen resize event.
     //window.addEventListener("resize", function() {
