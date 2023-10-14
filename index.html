@@ -135,17 +135,12 @@
           ['wooded'], 
           ['wooded','desert'],
           ['wooded','desert','mountain'] // 'swamp' replaces all 
-          ], // Alex note: I tried adding in another iteration of wooded, but it tends to overwrite the other features too much.
-            // Just going to increase the initial percentage instead. 
+          ], 
+          //stronghold_proportions = [0.008245877061, 0, 0.01049475262, 0.0007496251874, 0],
+          stronghold_proportions = [0.05, 0, 0.01049475262, 0.05, 0],
+          //town_proportions = [0.0007496251874, 0, 0, 0, 0.005997001499],
           delay = 500 // this number is in milliseconds, and is totally optional; could be 0.
       );
-
-      //find_adjacent();
-      //find_adjacent(
-      //    target_types = ['swamp', 'desert'],
-      //    terrain_replacers = ['woods', 'open'],
-      //    delay = 500
-      //);
 
     });
 
