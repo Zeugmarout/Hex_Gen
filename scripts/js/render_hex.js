@@ -63,7 +63,16 @@ function render_hexagons(numCols, numRows, container_height, container_width) {
 
             hex_label = document.getElementById('hex_label_' + uniqueID);
             hex_label.style.zIndex = hex_for_mods.style.zIndex + 1;
-            hex_label.textContent = uniqueID;
+            let current_hex_row = uniqueID % numRows;
+            let current_hex_col = Math.ceil(uniqueID / numRows);
+            hex_label.textContent = `${padWithZeroes(current_hex_col)}${padWithZeroes(current_hex_row)}`;
+            hex_label.style.fontSize = hexagon_size_y*0.25 + 'px';
+
+            //const fontSize = Math.min(hexagon_size_x, hexagon_size_y) * 0.1; // Adjust the scaling factor as needed
+            //const fontSize = hexagon_size_y * 0.1;
+            // Apply the new font size to the text element
+            //text.style.fontSize = fontSize + 'px';
+            
             //if(hex_for_mods.offsetWidth <= 30){
             //    hex_label.textContent = ' ';
             //} else {
@@ -73,7 +82,50 @@ function render_hexagons(numCols, numRows, container_height, container_width) {
             //        hex_label.textContent = uniqueID;
             //    }
             //}
+
+            
             
         }
     }
 }
+
+function padWithZeroes(value) {
+    // Convert the value to a string
+    let stringValue = value.toString();
+
+    // Determine how many zeroes to add
+    let zeroesToAdd = 2 - stringValue.length;
+
+    // Add the required number of zeroes to the left of the value
+    if (zeroesToAdd > 0) {
+        for (let i = 0; i < zeroesToAdd; i++) {
+            stringValue = '0' + stringValue;
+        }
+    }
+
+    return stringValue;
+}
+
+/* Some Chat code that will give finer control over hex-label size.
+// Get references to the container and text elements
+const container = document.getElementById('');
+const label_text = document.getElementsByClassName('hex-label');
+
+// Function to adjust font size based on container size
+function adjustFontSize() {
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+
+    // Set the font size based on container width, height, or a combination of both
+    const fontSize = Math.min(containerWidth, containerHeight) * 0.1; // Adjust the scaling factor as needed
+
+    // Apply the new font size to the text element
+    text.style.fontSize = fontSize + 'px';
+}
+
+// Initial font size adjustment
+adjustFontSize();
+
+// Add an event listener to handle font size adjustments when the window is resized
+window.addEventListener('resize', adjustFontSize);
+*/

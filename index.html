@@ -192,11 +192,18 @@
 
     
 
-      // Screen resize event.
-    //window.addEventListener("resize", function() {
-    //  render_hexagons(numCols, numRows, container_height, container_width);
-    //});
-    //});
+    // Screen resize event.
+    // Needs to smoothly resize hex grid, but leave sidebar as it is...
+    /*
+    window.addEventListener("resize", function() {
+      numRows = number_hex_v.value;
+      numCols = number_hex_h.value;
+      container_height = document.getElementById('hex_gen_page').offsetHeight;
+      container_width = document.getElementById('hex_gen_page').offsetWidth;
+      render_hexagons(numCols, numRows, container_height, container_width);
+    });
+    */
+    
   </script>
 </body>
 </html>
