@@ -100,6 +100,52 @@
 }
 
 
+.desert_town {
+    background: url(../mats/desert_town.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.mountain_town {
+    background: url(../mats/mountain_town.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.open_town {
+    background: url(../mats/open_town.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.swamp_town {
+    background: url(../mats/swamp_town.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+}
+.wooded_town {
+    background: url(../mats/wooded_town.png);
+    top: 12%;
+    left: 12%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+
 
 .hex-center:hover {
     transform: translateY(-15%) !important; /* Move 20px upward on hover */
